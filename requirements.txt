@@ -1,2 +1,10 @@
-FastAPI
-routers
+fastapi>=0.100.0
+uvicorn[standard]
+pydantic>=2.0.0
+typing-extensions
+annotated-types
+jinja2
+mysql-connector-python
+bcrypt
+python-dotenv
+starlette

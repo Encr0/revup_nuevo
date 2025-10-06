@@ -20,10 +20,9 @@ async def login_post(request: Request, email: str = Form(...), password: str = F
     print(f"POST: {email=}, {password=}")
     usuario = buscar_usuario(email=email, password=password)
     print("Usuario encontrado en login_post:", usuario)
-    if usuario:  # Login OK
-        # Puedes añadir manejo de sesión aquí si deseas
+    if usuario: 
         return RedirectResponse(url="/home", status_code=303)
-    else:  # Login fallido, muestra error
+    else: 
         return RedirectResponse(url="/?msg=Datos%20incorrectos", status_code=303)
 
 @router.get("/home", response_class=HTMLResponse)
