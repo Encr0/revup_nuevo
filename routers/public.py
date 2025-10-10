@@ -14,7 +14,6 @@ def login(request: Request, msg: str = ""):
     return templates.TemplateResponse("login.html", {"request": request, "titulo": "Login | Revup Group", "msg": msg})
 
 
-
 @router.post("/home")
 async def login_post(request: Request, email: str = Form(...), password: str = Form(...)):
     print(f"POST: {email=}, {password=}")
@@ -25,10 +24,22 @@ async def login_post(request: Request, email: str = Form(...), password: str = F
     else: 
         return RedirectResponse(url="/?msg=Datos%20incorrectos", status_code=303)
 
-@router.get("/home", response_class=HTMLResponse)
-def home(request: Request):
-    return templates.TemplateResponse("home.html", {"request": request, "titulo": "Home | Revup Group"})
 
+
+@router.get("/home", response_class=HTMLResponse)
+def lista(request: Request) -> HTMLResponse:
+    try:
+        empleados = EmpleadosModel.get_all()
+    except Exception as e:
+        empleados = []
+    return templates.TemplateResponse(
+        "home.html",
+        {
+            "request": request,
+            "empleados": empleados,
+            "titulo": "Lista de empleados | Revup Group"
+        }
+    )
 @router.get("/lista", response_class=HTMLResponse)
 def lista(request: Request) -> HTMLResponse:
     try:
