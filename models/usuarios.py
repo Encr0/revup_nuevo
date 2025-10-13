@@ -15,3 +15,26 @@ def buscar_usuario(email: str, password: str):
     cnx.close()
     return usuario
 
+def crear_usuario(email: str, password: str):
+    cnx = get_connection()
+    if not cnx:
+        print("DB Connection error")
+        return False
+    cursor = cnx.cursor()
+    # Verifica si el usuario ya existe 
+    cursor.execute(
+        "SELECT id FROM usuarios WHERE email=%s", (email,)
+    )
+    if cursor.fetchone():
+        cursor.close()
+        cnx.close()
+        return False  # Usuario ya existe
+    # Inserta el nuevo usuario
+    cursor.execute(
+        "INSERT INTO usuarios (email, password, disabled) VALUES (%s, %s, 0)",
+        (email, password)
+    )
+    cnx.commit()
+    cursor.close()
+    cnx.close()
+    return True
